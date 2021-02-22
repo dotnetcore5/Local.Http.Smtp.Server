@@ -42,15 +42,13 @@ namespace SmtpServer
 
         protected void RunThread()
         {
-            string line = null;
-
             writer.WriteLine("220 localhost -- Fake proxy server");
 
             try
             {
                 while (reader != null)
                 {
-                    line = reader.ReadLine();
+                    string line = reader.ReadLine();
                     if (string.IsNullOrWhiteSpace(line)) break;
 
                     Console.Error.WriteLine("Read line {0}", line);
