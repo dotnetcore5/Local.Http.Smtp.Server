@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmtpServer", "SmtpServer\SmtpServer.csproj", "{1D33F003-0A12-49DD-AC71-4F054DE50C27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionApp", "FunctionApp\FunctionApp.csproj", "{8C06B185-AC30-493A-BA54-A3B716DCFDAF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D33F003-0A12-49DD-AC71-4F054DE50C27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D33F003-0A12-49DD-AC71-4F054DE50C27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D33F003-0A12-49DD-AC71-4F054DE50C27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D33F003-0A12-49DD-AC71-4F054DE50C27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C06B185-AC30-493A-BA54-A3B716DCFDAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C06B185-AC30-493A-BA54-A3B716DCFDAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C06B185-AC30-493A-BA54-A3B716DCFDAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C06B185-AC30-493A-BA54-A3B716DCFDAF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D6A8F0CF-F709-4B70-B2D8-B4C2BEAD6975}
+	EndGlobalSection
+EndGlobal
