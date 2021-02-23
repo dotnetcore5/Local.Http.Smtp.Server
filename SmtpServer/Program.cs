@@ -9,7 +9,9 @@ namespace SmtpServer
         private static void Main(string[] args)
         {
             int counter = 0;
+
             EmailServer emailServer;
+
             do
             {
                 if (counter == 0)
