@@ -1,46 +1,41 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace SmtpServer
 {
-    public class EmailServer : TcpListener
+    public class Server : TcpListener
     {
         private TcpClient client;
         private NetworkStream stream;
         private StreamReader reader;
         private StreamWriter writer;
-        private Thread thread = null;
+        private Task thread = null;
 
-        public bool IsThreadAlive
-        {
-            get { return thread.IsAlive; }
-        }
 
-        public EmailServer(IPAddress localaddr, int port) : base(localaddr, port)
+        public Server(IPAddress localaddr, int port) : base(localaddr, port)
         {
+
         }
 
         new public void Start()
         {
             base.Start();
-
             client = AcceptTcpClient();
-            client.ReceiveTimeout = 5000;
+            client.ReceiveTimeout = 50000;
             stream = client.GetStream();
             reader = new StreamReader(stream);
             writer = new StreamWriter(stream);
             writer.NewLine = "\r\n";
             writer.AutoFlush = true;
 
-            thread = new Thread(new ThreadStart(RunThread));
-            thread.Start();
+            RunTask();
         }
 
-        protected void RunThread()
+        protected void RunTask()
         {
             writer.WriteLine("220 localhost -- Fake proxy server");
 
@@ -51,7 +46,7 @@ namespace SmtpServer
                     string line = reader.ReadLine();
                     if (string.IsNullOrWhiteSpace(line)) break;
 
-                    Console.Error.WriteLine("Read line {0}", line);
+                    //Console.Error.WriteLine("Read line {0}", line);
 
                     switch (line)
                     {
@@ -109,5 +104,6 @@ namespace SmtpServer
                 Stop();
             }
         }
+
     }
 }
