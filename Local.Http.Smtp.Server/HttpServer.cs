@@ -18,7 +18,7 @@ namespace Local.Http.Email.Server
             listener = new HttpListener();
             listener.Prefixes.Add(url);
             listener.Start();
-            Console.WriteLine("Http server running on : {0}...", url);
+            Console.WriteLine($"Http server running on : {url}...");
         }
 
         public async Task Start()
@@ -35,7 +35,7 @@ namespace Local.Http.Email.Server
                 Console.WriteLine(req.UserHostName);
                 Console.WriteLine(req.UserAgent);
                 Console.WriteLine();
-                if (req.Url.AbsolutePath != "/favicon.ico")
+                if (req.Url.AbsolutePath == "/favicon.ico")
                     pageViews += 1;
                 byte[] data;
                 string disableSubmit = !runServer ? "disabled" : "";
