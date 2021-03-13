@@ -12,7 +12,7 @@ namespace EmailApp
     public static class Email
     {
         [FunctionName("email")]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "email")] HttpRequest req, ILogger log)
+        public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "email")] HttpRequest req, ILogger log)
         {
             try
             {
@@ -22,9 +22,9 @@ namespace EmailApp
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-            return new OkObjectResult("good");
+            return new OkObjectResult("email sent !!!");
         }
     }
 }

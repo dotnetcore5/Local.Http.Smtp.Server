@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -13,17 +13,16 @@ namespace SmtpServer
         private NetworkStream stream;
         private StreamReader reader;
         private StreamWriter writer;
-        private Task thread = null;
-
 
         public Server(IPAddress localaddr, int port) : base(localaddr, port)
         {
-
         }
 
         new public void Start()
         {
             base.Start();
+            Console.WriteLine("Smtp Server running !!!");
+
             client = AcceptTcpClient();
             client.ReceiveTimeout = 50000;
             stream = client.GetStream();
@@ -61,7 +60,7 @@ namespace SmtpServer
                                 const string SUBJECT = "Subject: ";
                                 if (line.StartsWith(SUBJECT))
                                 {
-                                    subject = line.Substring(SUBJECT.Length);
+                                    subject = line[SUBJECT.Length..];
                                 }
                                 else
                                 {
@@ -92,7 +91,7 @@ namespace SmtpServer
             }
             catch (IOException ex)
             {
-                Console.WriteLine("Connection lost.");
+                Console.WriteLine("Connection lost." + ex.InnerException?.Message ?? ex.Message);
             }
             catch (Exception ex)
             {
@@ -104,6 +103,5 @@ namespace SmtpServer
                 Stop();
             }
         }
-
     }
 }

@@ -1,40 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace SmtpServer
 {
     internal class ServerManager
     {
+        private const string url = "http://localhost:5000/";
+
         public static async Task Init()
         {
-            StartSmtpServer();
+            Task.Run(() =>
+            {
+                StartHttpServer();
+            });
             await Task.Run(() =>
             {
-                StartHttpServer().GetAwaiter();
+                StartEmailServer();
             });
         }
 
         private static async Task StartHttpServer()
         {
             HttpServer.Init();
-            Console.WriteLine("Http Server running !!!");
+
+            // Handle requests
+            await HttpServer.Start();
+
+            // Close the listener
             await HttpServer.Start();
         }
 
-        private static void StartSmtpServer()
+        private static void StartEmailServer()
         {
-            EmailServer emailServer;
-
+            int counter = 0;
+            Server server;
             do
             {
-                Console.WriteLine("Smtp Server running !!!");
-                emailServer = new EmailServer(IPAddress.Loopback, 25);
-                emailServer.Start();
-            } while (emailServer != null);
+                if (counter == 0)
+                {
+                    counter++;
+                }
+                server = new Server(IPAddress.Loopback, 25);
+
+                server.Start();
+            } while (server != null);
         }
     }
 }
