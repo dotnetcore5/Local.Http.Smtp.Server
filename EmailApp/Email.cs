@@ -7,24 +7,23 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Net.Mail;
 
-namespace EmailApp
+namespace Email.Test.App
 {
     public static class Email
     {
         [FunctionName("email")]
-        public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "email")] HttpRequest req, ILogger log)
+        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "email")] HttpRequest req, ILogger log)
         {
             try
             {
                 var smtpClient = new SmtpClient("localhost", 25);
-                var message = new MailMessage("admin@localhost", "user@localhost", "This is a test email", "Hi, Please click on this email, Thanks");
-                smtpClient.SendAsync(message, null);
+                await smtpClient.SendMailAsync("admin@localhost", "user@localhost", "This is a test email", "Hi, Please click on this email, Thanks");
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            return new OkObjectResult("email sent !!!");
+            return new OkObjectResult("Email sent !!!");
         }
     }
 }

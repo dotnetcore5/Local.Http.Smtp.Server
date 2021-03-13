@@ -1,19 +1,17 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 
-namespace SmtpServer
+namespace Local.Http.Email.Server
 {
     internal class ServerManager
     {
-        private const string url = "http://localhost:5000/";
-
         public static async Task Init()
         {
-            Task.Run(() =>
-            {
-                StartHttpServer();
-            });
+            _ = Task.Run(async () =>
+              {
+                  await StartHttpServer();
+              });
+
             await Task.Run(() =>
             {
                 StartEmailServer();
@@ -22,17 +20,24 @@ namespace SmtpServer
 
         private static async Task StartHttpServer()
         {
-            HttpServer.Init();
+            const string httpServerBaseAddress = "http://localhost:5000/";
+            int counter = 0;
+            HttpServer httpServer;
+            do
+            {
+                if (counter == 0)
+                {
+                    counter++;
+                }
+                httpServer = new HttpServer(httpServerBaseAddress);
 
-            // Handle requests
-            await HttpServer.Start();
-
-            // Close the listener
-            await HttpServer.Start();
+                await httpServer.Start();
+            } while (httpServer != null);
         }
 
         private static void StartEmailServer()
         {
+            const int smtpPort = 25;
             int counter = 0;
             Server server;
             do
@@ -41,7 +46,7 @@ namespace SmtpServer
                 {
                     counter++;
                 }
-                server = new Server(IPAddress.Loopback, 25);
+                server = new Server(IPAddress.Loopback, smtpPort);
 
                 server.Start();
             } while (server != null);

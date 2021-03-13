@@ -1,9 +1,6 @@
-﻿using System;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace SmtpServer
+namespace Local.Http.Email.Server
 {
     internal class Program
     {
@@ -11,5 +8,5 @@ namespace SmtpServer
         {
             await ServerManager.Init();
         }
-   }
+    }
 }
