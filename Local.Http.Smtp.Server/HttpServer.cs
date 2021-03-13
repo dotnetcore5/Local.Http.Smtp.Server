@@ -11,7 +11,7 @@ namespace Local.Http.Email.Server
         public static HttpListener listener;
         public static int pageViews = 0;
         public static int requestCount = 0;
-        public static string indexData = File.ReadAllText(@"data/index.html");
+        public static string htmlResponse = File.ReadAllText(@"data/index.html");
 
         public HttpServer(string url)
         {
@@ -21,7 +21,7 @@ namespace Local.Http.Email.Server
             Console.WriteLine($"Http server running on : {url}...");
         }
 
-        public async Task Start()
+        public async Task StartAsync()
         {
             bool runServer = true;
             while (runServer)
@@ -29,6 +29,7 @@ namespace Local.Http.Email.Server
                 var ctx = await listener.GetContextAsync();
                 var req = ctx.Request;
                 var resp = ctx.Response;
+                Console.WriteLine("Start requested");
                 Console.WriteLine("Request #: {0}", ++requestCount);
                 Console.WriteLine(req.Url.ToString());
                 Console.WriteLine(req.HttpMethod);
@@ -42,12 +43,11 @@ namespace Local.Http.Email.Server
 
                 if ((req.HttpMethod == "POST"))
                 {
-                    if (req.Url.AbsolutePath == "/start")
+                    if (req.Url.AbsolutePath == "/startz")
                     {
-                        Console.WriteLine("Start requested");
                         runServer = true;
                         disableSubmit = !runServer ? "disabled" : "";
-                        data = Encoding.UTF8.GetBytes(string.Format(indexData, pageViews, disableSubmit));
+                        data = Encoding.UTF8.GetBytes(string.Format(htmlResponse, pageViews, disableSubmit));
                     }
                     else
                     {
@@ -57,7 +57,7 @@ namespace Local.Http.Email.Server
                 }
                 else
                 {
-                    data = Encoding.UTF8.GetBytes(string.Format(indexData, pageViews, disableSubmit));
+                    data = Encoding.UTF8.GetBytes(string.Format(htmlResponse, pageViews, disableSubmit));
                 }
                 resp.ContentType = "text/html";
                 resp.ContentEncoding = Encoding.UTF8;
@@ -76,9 +76,7 @@ namespace Local.Http.Email.Server
                 Console.WriteLine("No client data was sent with the request.");
                 return default;
             }
-            var body = request.InputStream;
-            var encoding = request.ContentEncoding;
-            var reader = new StreamReader(body, encoding);
+            var reader = new StreamReader(request.InputStream, request.ContentEncoding);
             if (request.ContentType != null)
             {
                 Console.WriteLine("Client data content type {0}", request.ContentType);
@@ -89,14 +87,9 @@ namespace Local.Http.Email.Server
             string requestPayLoad = reader.ReadToEnd();
             Console.WriteLine(requestPayLoad);
             Console.WriteLine("End of client data:");
-            body.Close();
+            request.InputStream.Close();
             reader.Close();
             return requestPayLoad;
-        }
-
-        public static void Stop()
-        {
-            listener.Close();
         }
     }
 }

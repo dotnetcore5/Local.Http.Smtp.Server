@@ -31,12 +31,13 @@ namespace Local.Http.Email.Server
                 }
                 httpServer = new HttpServer(httpServerBaseAddress);
 
-                await httpServer.Start();
+                await httpServer.StartAsync();
             } while (httpServer != null);
         }
 
         private static void StartEmailServer()
         {
+            const string smtpServerName = "127.0.0.1";
             const int smtpPort = 25;
             int counter = 0;
             Server server;
@@ -46,7 +47,8 @@ namespace Local.Http.Email.Server
                 {
                     counter++;
                 }
-                server = new Server(IPAddress.Loopback, smtpPort);
+                var ipAddress = IPAddress.Parse(smtpServerName);
+                server = new Server(ipAddress, smtpPort);
 
                 server.Start();
             } while (server != null);
