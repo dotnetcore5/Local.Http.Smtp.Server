@@ -25,7 +25,13 @@ namespace Local.Http.Email.Server
         {
             base.Start();
 
-            Console.WriteLine($"Smtp Server running on : {_localaddr.ToString()}:{_port}...");
+            Console.WriteLine($"**************************************************************************************");
+            Console.WriteLine($"**************************************************************************************");
+            Console.WriteLine($"***                                                                                ***");
+            Console.WriteLine($"***                Smtp Server running on : {_localaddr.ToString()}:{_port}...                        ***");
+            Console.WriteLine($"***                                                                                ***");
+            Console.WriteLine($"**************************************************************************************");
+            Console.WriteLine($"**************************************************************************************");
 
             _client = AcceptTcpClient();
             _client.ReceiveTimeout = 50000;

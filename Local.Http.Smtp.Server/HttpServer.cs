@@ -18,7 +18,14 @@ namespace Local.Http.Email.Server
             listener = new HttpListener();
             listener.Prefixes.Add(url);
             listener.Start();
-            Console.WriteLine($"Http server running on : {url}...");
+
+            Console.WriteLine($"**************************************************************************************");
+            Console.WriteLine($"**************************************************************************************");
+            Console.WriteLine($"***                                                                                ***");
+            Console.WriteLine($"***                Http server running on : {url}...              ***");
+            Console.WriteLine($"***                                                                                ***");
+            Console.WriteLine($"**************************************************************************************");
+            Console.WriteLine($"**************************************************************************************");
         }
 
         public async Task StartAsync()
@@ -29,31 +36,19 @@ namespace Local.Http.Email.Server
                 var ctx = await listener.GetContextAsync();
                 var req = ctx.Request;
                 var resp = ctx.Response;
-                Console.WriteLine("Start requested");
+                Console.WriteLine("http request received ...");
                 Console.WriteLine("Request #: {0}", ++requestCount);
                 Console.WriteLine(req.Url.ToString());
                 Console.WriteLine(req.HttpMethod);
-                Console.WriteLine(req.UserHostName);
-                Console.WriteLine(req.UserAgent);
                 Console.WriteLine();
+                byte[] data;
                 if (req.Url.AbsolutePath == "/favicon.ico")
                     pageViews += 1;
-                byte[] data;
                 string disableSubmit = !runServer ? "disabled" : "";
 
-                if ((req.HttpMethod == "POST"))
+                if (req.HttpMethod == "POST")
                 {
-                    if (req.Url.AbsolutePath == "/startz")
-                    {
-                        runServer = true;
-                        disableSubmit = !runServer ? "disabled" : "";
-                        data = Encoding.UTF8.GetBytes(string.Format(htmlResponse, pageViews, disableSubmit));
-                    }
-                    else
-                    {
-                        var requestPayload = ShowRequestPayload(req);
-                        data = Encoding.UTF8.GetBytes(requestPayload);
-                    }
+                    data = Encoding.UTF8.GetBytes(ShowRequestPayload(req));
                 }
                 else
                 {
@@ -62,7 +57,7 @@ namespace Local.Http.Email.Server
                 resp.ContentType = "text/html";
                 resp.ContentEncoding = Encoding.UTF8;
                 resp.ContentLength64 = data.LongLength;
-                resp.AddHeader("XResponse", "This is test header:");
+                resp.AddHeader("X-Response", "This is test header:");
 
                 await resp.OutputStream.WriteAsync(data, 0, data.Length);
                 resp.Close();
@@ -74,7 +69,7 @@ namespace Local.Http.Email.Server
             if (!request.HasEntityBody)
             {
                 Console.WriteLine("No client data was sent with the request.");
-                return default;
+                return string.Empty;
             }
             var reader = new StreamReader(request.InputStream, request.ContentEncoding);
             if (request.ContentType != null)
