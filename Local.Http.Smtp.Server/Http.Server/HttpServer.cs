@@ -1,20 +1,29 @@
 ﻿using Local.Http.Email.Server.Common;
+using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace Local.Http.Email.Server.Http.Server
 {
-    internal class HttpServer
+    public interface IHttpServer
+    {
+        Task StartAsync();
+    }
+
+    internal class HttpServer : IHttpServer
     {
         private static HttpListener listener;
-        private HttpRequestHandler requestHandler;
+        private IHttpRequestHandler _httpRequestHandler;
+        private readonly IConfigurationRoot _config;
 
-        public HttpServer(string url)
+        public HttpServer(IConfigurationRoot config, IHttpRequestHandler httpRequestHandler)
         {
+            _config = config;
+            _httpRequestHandler = httpRequestHandler;
             listener = new HttpListener();
+            var url = _config["HttpServer:BaseAddress"] + ":" + _config["HttpServer:Port"] + "/";
             listener.Prefixes.Add(url);
             listener.Start();
-            requestHandler = new HttpRequestHandler();
             url.ShowOnConsole("Http");
         }
 
@@ -23,7 +32,7 @@ namespace Local.Http.Email.Server.Http.Server
             bool runServer = true;
             while (runServer)
             {
-                await requestHandler.Handle(listener);
+                await _httpRequestHandler.HandleAsync(listener);
             }
         }
     }

@@ -7,7 +7,12 @@ using System.Web;
 
 namespace Local.Http.Email.Server.Http.Server
 {
-    internal class RequestPayloadHandler
+    public interface IRequestPayloadHandler
+    {
+        Task<NameValueCollection> ShowRequestPayload(HttpListenerRequest request);
+    }
+
+    internal class RequestPayloadHandler : IRequestPayloadHandler
     {
         public async Task<NameValueCollection> ShowRequestPayload(HttpListenerRequest request)
         {

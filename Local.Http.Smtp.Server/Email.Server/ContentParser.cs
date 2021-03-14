@@ -4,7 +4,12 @@ using System.Text;
 
 namespace Local.Http.Email.Server.Email.Server
 {
-    internal class ContentParser
+    public interface IContentParser
+    {
+        Tuple<string, string> ParseEmail(StreamReader _reader, string line);
+    }
+
+    internal class ContentParser : IContentParser
     {
         public Tuple<string, string> ParseEmail(StreamReader _reader, string line)
         {

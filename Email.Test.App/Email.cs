@@ -17,7 +17,12 @@ namespace Email.Test.App
             try
             {
                 var smtpClient = new SmtpClient("localhost", 25);
-                await smtpClient.SendMailAsync("admin@localhost", "user@localhost", "This is a test email", "Hi, Please click on this email, Thanks");
+                await smtpClient.SendMailAsync(
+                    "admin@localhost",
+                    "user@localhost",
+                    "This is a test email",
+                    "Hi, Please click on this email, Thanks"
+                    );
             }
             catch (Exception ex)
             {

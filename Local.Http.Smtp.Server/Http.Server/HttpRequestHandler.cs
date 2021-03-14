@@ -6,19 +6,24 @@ using System.Threading.Tasks;
 
 namespace Local.Http.Email.Server.Http.Server
 {
-    internal class HttpRequestHandler
+    public interface IHttpRequestHandler
+    {
+        Task HandleAsync(HttpListener listener);
+    }
+
+    internal class HttpRequestHandler : IHttpRequestHandler
     {
         public static int pageViews = 0;
         public static int requestCount = 0;
         public static string htmlPost = File.ReadAllText(@"data/httpPost.html"), htmlGet = File.ReadAllText(@"data/httpGet.html");
-        private RequestPayloadHandler payloadHandler;
+        private readonly IRequestPayloadHandler _payloadHandler;
 
-        public HttpRequestHandler()
+        public HttpRequestHandler(IRequestPayloadHandler payloadHandler)
         {
-            payloadHandler = new RequestPayloadHandler();
+            _payloadHandler = payloadHandler;
         }
 
-        public async Task Handle(HttpListener listener)
+        public async Task HandleAsync(HttpListener listener)
         {
             var ctx = await listener.GetContextAsync();
             var httpRequest = ctx.Request;
@@ -31,7 +36,7 @@ namespace Local.Http.Email.Server.Http.Server
             byte[] data;
             if (httpRequest.HttpMethod == "POST")
             {
-                var postData = await payloadHandler.ShowRequestPayload(httpRequest);
+                var postData = await _payloadHandler.ShowRequestPayload(httpRequest);
                 data = Encoding.UTF8.GetBytes(string.Format(htmlGet, postData[0], postData[1], postData[2]));
             }
             else

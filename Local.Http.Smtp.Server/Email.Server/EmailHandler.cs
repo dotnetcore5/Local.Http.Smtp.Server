@@ -3,40 +3,45 @@ using System.IO;
 
 namespace Local.Http.Email.Server.Email.Server
 {
-    internal class EmailHandler
+    public interface IEmailHandler
     {
-        private ContentParser contentParser;
+        void Read(StreamReader reader, StreamWriter writer);
+    }
 
-        public EmailHandler()
+    internal class EmailHandler : IEmailHandler
+    {
+        private IContentParser _contentParser;
+
+        public EmailHandler(IContentParser contentParser)
         {
-            contentParser = new ContentParser();
+            _contentParser = contentParser; ;
         }
 
-        public void Read(StreamReader _reader, StreamWriter _writer)
+        public void Read(StreamReader reader, StreamWriter writer)
         {
-            while (_reader != null)
+            while (reader != null)
             {
-                string line = _reader.ReadLine();
+                string line = reader.ReadLine();
                 if (string.IsNullOrWhiteSpace(line)) break;
 
                 switch (line)
                 {
                     case "DATA":
-                        _writer.WriteLine("354 Start input, end data with <CRLF>.<CRLF>");
-                        var content = contentParser.ParseEmail(_reader, line);
+                        writer.WriteLine("354 Start input, end data with <CRLF>.<CRLF>");
+                        var content = _contentParser.ParseEmail(reader, line);
                         string message = content.Item1;
                         Console.Error.WriteLine("Received ­ email with subject: {0} and message: {1}", content.Item2, message);
                         Console.Error.WriteLine("250 OK");
-                        _writer.WriteLine("250 OK");
+                        writer.WriteLine("250 OK");
                         break;
 
                     case "QUIT":
-                        _writer.WriteLine("250 OK");
-                        _reader = null;
+                        writer.WriteLine("250 OK");
+                        reader = null;
                         break;
 
                     default:
-                        _writer.WriteLine("250 OK");
+                        writer.WriteLine("250 OK");
                         break;
                 }
             }
