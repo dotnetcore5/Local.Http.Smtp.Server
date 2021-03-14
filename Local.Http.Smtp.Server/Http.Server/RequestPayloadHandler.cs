@@ -1,32 +1,35 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace Local.Http.Email.Server.Http.Server
 {
     internal class RequestPayloadHandler
     {
-        public string ShowRequestPayload(HttpListenerRequest request)
+        public async Task<NameValueCollection> ShowRequestPayload(HttpListenerRequest request)
         {
             if (!request.HasEntityBody)
             {
                 Console.WriteLine("No client data was sent with the request.");
-                return string.Empty;
+                return default;
             }
-            var reader = new StreamReader(request.InputStream, request.ContentEncoding);
-            if (request.ContentType != null)
+            NameValueCollection postData;
+            using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
             {
-                Console.WriteLine("Client data content type {0}", request.ContentType);
+                if (request.ContentType != null)
+                {
+                    Console.WriteLine("Client data content type {0}", request.ContentType);
+                }
+                Console.WriteLine("Client data content length {0}", request.ContentLength64);
+                var requestPayLoad = await reader.ReadToEndAsync();
+                postData = HttpUtility.ParseQueryString(requestPayLoad);
+                Console.WriteLine(requestPayLoad);
+                request.InputStream.Close();
             }
-            Console.WriteLine("Client data content length {0}", request.ContentLength64);
-
-            Console.WriteLine("Start of client data:");
-            string requestPayLoad = reader.ReadToEnd();
-            Console.WriteLine(requestPayLoad);
-            Console.WriteLine("End of client data:");
-            request.InputStream.Close();
-            reader.Close();
-            return requestPayLoad;
+            return postData;
         }
     }
 }
