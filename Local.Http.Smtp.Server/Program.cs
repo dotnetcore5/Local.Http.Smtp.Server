@@ -6,7 +6,7 @@ namespace Local.Http.Email.Server
     {
         private static async Task Main(string[] args)
         {
-            await ServerManager.Init();
+            await ServerManager.StartAsync();
         }
     }
 }

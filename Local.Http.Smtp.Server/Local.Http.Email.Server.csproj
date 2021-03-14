@@ -6,9 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="data\index.html">
+    <None Update="data\httpGet.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="data\httpPost.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>

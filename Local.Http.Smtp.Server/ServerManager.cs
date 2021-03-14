@@ -1,36 +1,26 @@
-﻿using System.Net;
+﻿using Local.Http.Email.Server.Email.Server;
+using System.Net;
 using System.Threading.Tasks;
+using Local.Http.Email.Server.Http.Server;
 
 namespace Local.Http.Email.Server
 {
     internal class ServerManager
     {
-        public static async Task Init()
+        public static async Task StartAsync()
         {
-            _ = Task.Run(async () =>
-              {
-                  await StartHttpServer();
-              });
+            _ = Task.Run(async () => await StartHttpServer());
 
-            await Task.Run(() =>
-            {
-                StartEmailServer();
-            });
+            await Task.Run(() => StartEmailServer());
         }
 
         private static async Task StartHttpServer()
         {
             const string httpServerBaseAddress = "http://localhost:5000/";
-            int counter = 0;
             HttpServer httpServer;
             do
             {
-                if (counter == 0)
-                {
-                    counter++;
-                }
                 httpServer = new HttpServer(httpServerBaseAddress);
-
                 await httpServer.StartAsync();
             } while (httpServer != null);
         }
@@ -39,18 +29,12 @@ namespace Local.Http.Email.Server
         {
             const string smtpServerName = "127.0.0.1";
             const int smtpPort = 25;
-            int counter = 0;
-            Server server;
+            EmailServer server;
             do
             {
-                if (counter == 0)
-                {
-                    counter++;
-                }
                 var ipAddress = IPAddress.Parse(smtpServerName);
-                server = new Server(ipAddress, smtpPort);
-
-                server.Start();
+                server = new EmailServer(ipAddress, smtpPort);
+                server.StartEmail();
             } while (server != null);
         }
     }
