@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 
 namespace Local.Http.Email.Server.Http.Server
 {
