@@ -27,12 +27,13 @@ namespace Email.Test.App
                     emailData.Subject,
                     emailData.Body
                     );
+
+                return new OkObjectResult($"Email sent to {emailData.To}!!!");
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            return new OkObjectResult("Email sent !!!");
         }
     }
 

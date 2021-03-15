@@ -25,6 +25,7 @@ namespace Local.Http.Email.Server
             serviceCollection.AddSingleton<IServerManager, ServerManager>();
             serviceCollection.AddSingleton<IHttpRequestHandler, HttpRequestHandler>();
             serviceCollection.AddSingleton<IRequestPayloadHandler, RequestPayloadHandler>();
+            serviceCollection.AddSingleton<IEmailSender, EmailSender>();
             serviceCollection.AddSingleton<IHttpServer, HttpServer>();
             serviceCollection.AddSingleton<IEmailServer, EmailServer>();
             serviceCollection.AddSingleton<IEmailHandler, EmailHandler>();

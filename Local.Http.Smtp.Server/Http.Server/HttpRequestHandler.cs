@@ -17,10 +17,12 @@ namespace Local.Http.Email.Server.Http.Server
         private int requestCount = 0;
         private readonly string htmlPost = File.ReadAllText(@"Websites/Website1/httpPost.html"), htmlGet = File.ReadAllText(@"Websites/Website1/httpGet.html");
         private readonly IRequestPayloadHandler _payloadHandler;
+        private readonly IEmailSender _emailSender;
 
-        public HttpRequestHandler(IRequestPayloadHandler payloadHandler)
+        public HttpRequestHandler(IRequestPayloadHandler payloadHandler, IEmailSender emailSender)
         {
             _payloadHandler = payloadHandler;
+            _emailSender = emailSender;
         }
 
         public async Task HandleAsync(HttpListener listener)
@@ -37,7 +39,7 @@ namespace Local.Http.Email.Server.Http.Server
             if (httpRequest.HttpMethod == "POST")
             {
                 var postData = await _payloadHandler.ShowRequestPayload(httpRequest);
-                await _payloadHandler.SendEmail(postData);
+                await _emailSender.SendEmail(postData);
                 data = Encoding.UTF8.GetBytes(string.Format(htmlGet, postData[0], postData[1], postData[2], postData[3]));
             }
             else
