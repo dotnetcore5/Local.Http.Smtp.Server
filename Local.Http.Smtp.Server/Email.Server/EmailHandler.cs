@@ -14,7 +14,7 @@ namespace Local.Http.Email.Server.Email.Server
 
         public EmailHandler(IContentParser contentParser)
         {
-            _contentParser = contentParser; ;
+            _contentParser = contentParser;
         }
 
         public void Read(StreamReader reader, StreamWriter writer)

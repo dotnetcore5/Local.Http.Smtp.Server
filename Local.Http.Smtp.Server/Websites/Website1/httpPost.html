@@ -4,20 +4,26 @@
 <head>
     <meta charset="utf-8" />
     <title>Http server Post Example</title>
+    <link href="style/style.css" rel="stylesheet" />
 </head>
 <body>
-    <div style="margin-right:auto;margin-left:auto;width:40%;border:1px solid #ddd;margin-top:10%;padding-left:15%">
-        <p>Page Views: {0}</p>
+    <div class="container">
+        <h2> This page is served through the local Http server</h2>
+        <p>Page Views: {0} </p>
         <form method="post" action="#">
-            <table>
+            <table class="content">
                 <tr><td><label>Full name: </label></td> <td> <input type="text" name="fullname" /></td></tr>
+                <tr>
+                    <td><label>Sender email: </label></td>
+                    <td><input type="text" name="email" /></td>
+                </tr>
                 <tr>
                     <td><label>Subject: </label></td>
                     <td><input type="text" name="subject" /></td>
                 </tr>
                 <tr>
                     <td><label>Body: </label></td>
-                    <td><input type="text" name="body" /></td>
+                    <td><textarea cols="30" rows="5" name="body"></textarea></td>
                 </tr>
                 <tr>
                     <td colspan="2"><input type="submit" value="Send Email =>"></td>
