@@ -26,9 +26,9 @@ The overall objective of the applications :
 
 ```
 
->	A user can browse to "http://localhost:5000/". 
+>   A user can browse to "http://localhost:5000/". 
 >   The page is served through the **http server**. The console application logs the browsing.
->	User can send email and see the logs within the console.
+>   User can send email and see the logs within the console.
 
 ```
 
