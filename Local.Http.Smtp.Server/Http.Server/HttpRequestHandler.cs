@@ -10,7 +10,7 @@ namespace Local.Http.Email.Server.Http.Server
     {
         public static int pageViews = 0;
         public static int requestCount = 0;
-        public static string htmlPost = File.ReadAllText(@"data/httpPost.html"), htmlGet = File.ReadAllText(@"data/httpGet.html");
+        public static string htmlPost = File.ReadAllText(@"Website/httpPost.html"), htmlGet = File.ReadAllText(@"Website/httpGet.html");
         private RequestPayloadHandler payloadHandler;
 
         public HttpRequestHandler()
@@ -32,7 +32,7 @@ namespace Local.Http.Email.Server.Http.Server
             if (httpRequest.HttpMethod == "POST")
             {
                 var postData = await payloadHandler.ShowRequestPayload(httpRequest);
-                data = Encoding.UTF8.GetBytes(string.Format(htmlGet, postData[0], postData[1], postData[2]));
+                data = Encoding.UTF8.GetBytes(string.Format(htmlGet, postData[0], postData[1], postData[2], postData[3]));
             }
             else
             {

@@ -4,21 +4,26 @@
 <head>
     <meta charset="utf-8" />
     <title>Http server Get Example</title>
+    <link href="style/style.css" rel="stylesheet" />
 </head>
 <body>
-    <div style="margin-right:auto;margin-left:auto;width:40%;border:1px solid #ddd;margin-top:10%;padding-left:15%">
+    <div class="container">
         <table>
             <tr>
                 <td colspan="2"><label>The posted data :</label></td>
             </tr>
             <tr><td><label>full name: </label></td> <td> <label><b> {0} </b></label></td></tr>
             <tr>
-                <td><label>subject: </label></td>
+                <td><label>sender email: </label></td>
                 <td> <label><b> {1} </b> </label></td>
             </tr>
             <tr>
-                <td><label>body: </label></td>
+                <td><label>subject: </label></td>
                 <td> <label><b> {2} </b> </label></td>
+            </tr>
+            <tr>
+                <td><label>body: </label></td>
+                <td> <label><b> {3} </b> </label></td>
             </tr>
         </table>
     </div>
