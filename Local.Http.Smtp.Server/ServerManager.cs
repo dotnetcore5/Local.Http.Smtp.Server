@@ -2,40 +2,49 @@
 using System.Net;
 using System.Threading.Tasks;
 using Local.Http.Email.Server.Http.Server;
+using System.Diagnostics;
 
 namespace Local.Http.Email.Server
 {
-    internal class ServerManager
+    public interface IServerManager
     {
-        public static async Task StartAsync()
-        {
-            _ = Task.Run(async () => await StartHttpServer());
+        Task StartAsync();
+    }
 
-            await Task.Run(() => StartEmailServer());
+    internal class ServerManager : IServerManager
+    {
+        private readonly IHttpServer _httpServer;
+        private readonly IEmailServer _emailServer;
+
+        public ServerManager(IHttpServer httpServer, IEmailServer emailServer)
+        {
+            _httpServer = httpServer;
+            _emailServer = emailServer;
         }
 
-        private static async Task StartHttpServer()
+        public async Task StartAsync()
         {
-            const string httpServerBaseAddress = "http://localhost:5000/";
-            HttpServer httpServer;
-            do
+            _ = Task.Run(async () =>
             {
-                httpServer = new HttpServer(httpServerBaseAddress);
-                await httpServer.StartAsync();
-            } while (httpServer != null);
-        }
+                do
+                {
+                    await _httpServer.StartAsync();
+                } while (_httpServer != null);
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "http://localhost:5000",
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
+            });
 
-        private static void StartEmailServer()
-        {
-            const string smtpServerName = "127.0.0.1";
-            const int smtpPort = 25;
-            EmailServer server;
-            do
+            await Task.Run(() =>
             {
-                var ipAddress = IPAddress.Parse(smtpServerName);
-                server = new EmailServer(ipAddress, smtpPort);
-                server.StartEmail();
-            } while (server != null);
+                do
+                {
+                    _emailServer.Start();
+                } while (_emailServer != null);
+            });
         }
     }
 }

@@ -18,19 +18,22 @@ The repository consists of projects as below:
 | # |Project Name | Project detail | location| Environment |
 | ---| ---  | ---           | ---          | --- |
 | 1 | Local.Http.Smtp.Server | Dotnet5 console app  |  **Local.Http.Smtp.Server** folder | [![.Net Framework](https://img.shields.io/badge/DotNet-5.0-blue.svg?style=plastic)](https://dotnet.microsoft.com/download/dotnet/5.0)|
-| 2 | Email.Test.App | Azure function |  **Email.Test.App** folder | [![.Net Framework](https://img.shields.io/badge/DotNet-5.0-blue.svg?style=plastic)](https://dotnet.microsoft.com/download/dotnet/5.0)| 
+| 2 | Email.Test.App | Azure function to send email |  **Email.Test.App** folder | [![.Net Framework](https://img.shields.io/badge/DotNet-5.0-blue.svg?style=plastic)](https://dotnet.microsoft.com/download/dotnet/5.0)| 
 
 ### Summary
 
 The overall objective of the applications :
+
 ```
->	A user can browse to "http://localhost:5000/". The page is served through the **http server**. The console application logs the browsing.
+
+>	A user can browse to "http://localhost:5000/". 
+>   The page is served through the **http server**. The console application logs the browsing.
 >	User can send email and see the logs within the console.
+
 ```
 
 ### Setup detail
 
-##### Environment Setup detail
 
 > Download/install   	
 >	1.	[![.Net Framework](https://img.shields.io/badge/DotNet-5.0-blue.svg?style=plastic)](https://dotnet.microsoft.com/download/dotnet/5.0) to run webapi project

@@ -6,19 +6,24 @@ using System.Threading.Tasks;
 
 namespace Local.Http.Email.Server.Http.Server
 {
-    internal class HttpRequestHandler
+    public interface IHttpRequestHandler
     {
-        public static int pageViews = 0;
-        public static int requestCount = 0;
-        public static string htmlPost = File.ReadAllText(@"Website/httpPost.html"), htmlGet = File.ReadAllText(@"Website/httpGet.html");
-        private RequestPayloadHandler payloadHandler;
+        Task HandleAsync(HttpListener listener);
+    }
 
-        public HttpRequestHandler()
+    internal class HttpRequestHandler : IHttpRequestHandler
+    {
+        private int pageViews = 0;
+        private int requestCount = 0;
+        private readonly string htmlPost = File.ReadAllText(@"Websites/Website1/httpPost.html"), htmlGet = File.ReadAllText(@"Websites/Website1/httpGet.html");
+        private readonly IRequestPayloadHandler _payloadHandler;
+
+        public HttpRequestHandler(IRequestPayloadHandler payloadHandler)
         {
-            payloadHandler = new RequestPayloadHandler();
+            _payloadHandler = payloadHandler;
         }
 
-        public async Task Handle(HttpListener listener)
+        public async Task HandleAsync(HttpListener listener)
         {
             var ctx = await listener.GetContextAsync();
             var httpRequest = ctx.Request;
@@ -31,7 +36,8 @@ namespace Local.Http.Email.Server.Http.Server
             byte[] data;
             if (httpRequest.HttpMethod == "POST")
             {
-                var postData = await payloadHandler.ShowRequestPayload(httpRequest);
+                var postData = await _payloadHandler.ShowRequestPayload(httpRequest);
+                await _payloadHandler.SendEmail(postData);
                 data = Encoding.UTF8.GetBytes(string.Format(htmlGet, postData[0], postData[1], postData[2], postData[3]));
             }
             else
