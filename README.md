@@ -85,9 +85,12 @@ The overall objective of the applications :
 
 *********************************************************************************************
 ```
-For better experience please chrome browser
+For better experience please use chrome browser
 ```
 -----------------------------------------------------------------------
+
+
+
 ![Visitor Badge](https://visitor-badge.laobi.icu/badge?page_id=ajeetx/smtpserver)  | ![GitHub contributors](https://img.shields.io/github/contributors/ajeetx/Local.Http.Smtp.Server.svg?style=plastic)|![license](https://img.shields.io/github/license/ajeetx/Local.Http.Smtp.Server.svg?style=plastic)|
  | --- | --- | ---|
 
