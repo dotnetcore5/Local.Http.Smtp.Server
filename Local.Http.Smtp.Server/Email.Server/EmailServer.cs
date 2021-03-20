@@ -43,12 +43,13 @@ namespace Local.Http.Email.Server.Email.Server
             _writer = new StreamWriter(_stream);
             _writer.NewLine = "\r\n";
             _writer.AutoFlush = true;
-            RunTask();
+            ReceiveEmailTask();
         }
 
-        private void RunTask()
+        private void ReceiveEmailTask()
         {
-            _writer.WriteLine("220 localhost -- Fake proxy server");
+            Console.WriteLine("220 localhost -- Fake smtp server");
+            _writer.WriteLine("220 localhost -- Fake smtp server");
 
             try
             {
@@ -66,6 +67,7 @@ namespace Local.Http.Email.Server.Email.Server
             {
                 _client.Close();
                 tcpListener.Stop();
+                Start();
             }
         }
     }

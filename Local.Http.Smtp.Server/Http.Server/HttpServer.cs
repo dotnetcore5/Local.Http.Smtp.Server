@@ -1,5 +1,7 @@
 ﻿using Local.Http.Email.Server.Common;
 using Microsoft.Extensions.Configuration;
+using Serilog;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -30,10 +32,19 @@ namespace Local.Http.Email.Server.Http.Server
 
         public async Task StartAsync()
         {
-            bool runServer = true;
-            while (runServer)
+            try
             {
-                await _httpRequestHandler.HandleAsync(listener);
+                bool runServer = true;
+                while (runServer)
+                {
+                    await _httpRequestHandler.HandleAsync(listener);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "http server crashed !!! ");
+                Log.Fatal(ex, "http server restarting ... ");
+                await StartAsync();
             }
         }
     }
